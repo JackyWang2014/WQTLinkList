@@ -35,6 +35,7 @@ void clear_list(stu_t *);
 // 搜索链表
 void search_list(stu_t *, stu_t *, BOOL (*)(stu_t *, stu_t *),void (*func)(stu_t *));
 
+void reverse_list(stu_t * head);
 
 
 
@@ -55,7 +56,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4.根据名字查找一名学生的信息 5.根据年龄查找学生信息\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4.根据名字查找一名学生的信息 5.根据年龄查找学生信息 6.逆序所有学生\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -83,6 +84,9 @@ int main(int argc, const char * argv[]) {
             scanf("%d", &p->age);
             search_students_age(head, p);
             free(p);
+        } else if (ctr == 6) {
+            // 逆序链表的每个结点
+            reverse_list(head);
         }
     }
     
@@ -188,3 +192,16 @@ void search_students_age(stu_t * head, stu_t * p)
     search_list(head, p, cmp_node_age, print_node);
 }
 
+// 逆序链表结点
+void reverse_list(stu_t * head)
+{
+    stu_t * p = head->next;
+    head->next = NULL;
+    while (p) {
+        stu_t * tmp = p->next;
+        p->next = head->next;
+        head->next = p;
+        p = tmp;
+    }
+    
+}
