@@ -25,6 +25,10 @@ stu_t * create_node(void);
 void add_node(stu_t * head, stu_t * new_node);
 // 遍历链表
 void traverse_list(stu_t * head,  void (*func)(stu_t *));
+// 销毁链表
+void clear_list(stu_t *);
+
+
 // 遍历打印学生
 void print_students(stu_t * head);
 
@@ -37,7 +41,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -49,6 +53,8 @@ int main(int argc, const char * argv[]) {
         } else if (ctr == 2) {
             // 遍历链表, 打印每个结点的信息
             print_students(head);
+        } else if (ctr == 3) {
+            clear_list(head);
         }
     }
     
@@ -84,6 +90,8 @@ void print_node(stu_t * stu)
 {
     printf("姓名: %s 年龄: %d 成绩: %d\n",stu->name, stu->age, stu->score);
 }
+
+
 // 遍历链表
 void traverse_list(stu_t * head, void (*func)(stu_t *))
 {
@@ -92,6 +100,20 @@ void traverse_list(stu_t * head, void (*func)(stu_t *))
         func(head);
     }
 }
+
+// 销毁链表
+void clear_list(stu_t * head)
+{
+    stu_t * p = head->next;
+    while (p) {
+        stu_t * temp = p->next;
+        free(p);
+        p = temp;
+        
+    }
+    head->next = NULL;
+}
+
 // 遍历打印学生
 void print_students(stu_t * head)
 {
