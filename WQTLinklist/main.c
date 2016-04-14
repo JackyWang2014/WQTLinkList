@@ -130,12 +130,14 @@ void print_students(stu_t * head)
     traverse_list(head, print_node);
 }
 
+
+
 // 搜索链表
 void search_list(stu_t * head, stu_t * p)
 {
     // p是参照结点
     while ((head = head->next)) {
-        if (strcmp(head->name, p->name)) {
+        if (strcmp(head->name, p->name) == 0) {
             print_node(head);
         }
     }
