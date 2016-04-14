@@ -11,6 +11,11 @@
 #include <string.h>
 #include <ctype.h>
 
+typedef enum {
+    NO,
+    YES
+} BOOL;
+
 typedef struct stu{
     char name[64];
     
@@ -28,10 +33,15 @@ void traverse_list(stu_t * head,  void (*func)(stu_t *));
 // 销毁链表
 void clear_list(stu_t *);
 // 搜索链表
-void search_list(stu_t *, stu_t *);
+void search_list(stu_t *, stu_t *, BOOL (*)(stu_t *, stu_t *),void (*func)(stu_t *));
+
+
+
 
 // 遍历打印学生
 void print_students(stu_t * head);
+// 用名字查找学生, 打印学生信息
+void search_students_name(stu_t * head, stu_t * p);
 
 int main(int argc, const char * argv[]) {
   
@@ -42,7 +52,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4 查找一名学生的信息\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4 根据名字查找一名学生的信息\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -63,7 +73,7 @@ int main(int argc, const char * argv[]) {
             stu_t * p = create_node();
             scanf("%s", p->name);
             // 搜索对应结点
-            
+            search_students_name(head, p);
             
         }
     }
@@ -132,13 +142,29 @@ void print_students(stu_t * head)
 
 
 
+// 用名字比较两个结点
+BOOL cmp_node_name(stu_t * p1, stu_t * p2)
+{
+    if (strcmp(p1->name, p2->name) == 0) {
+        return YES;
+    }
+    return NO;
+}
+
 // 搜索链表
-void search_list(stu_t * head, stu_t * p)
+void search_list(stu_t * head, stu_t * p, BOOL (*cmp)(stu_t *, stu_t *), void (*func)(stu_t *))
 {
     // p是参照结点
     while ((head = head->next)) {
-        if (strcmp(head->name, p->name) == 0) {
-            print_node(head);
+        if (cmp(head, p) == YES) {
+            func(head);
         }
     }
+}
+
+// 用名字查找学生, 打印学生信息
+void search_students_name(stu_t * head, stu_t * p)
+{
+    search_list(head, p, cmp_node_name, print_node);
+    
 }
