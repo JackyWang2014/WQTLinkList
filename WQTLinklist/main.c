@@ -191,6 +191,20 @@ void search_students_age(stu_t * head, stu_t * p)
 {
     search_list(head, p, cmp_node_age, print_node);
 }
+// 插入某节点到 index位置
+// index 从0开始
+void insert_node(stu_t * head, stu_t * new_node, int index)
+{
+    for (int i = 0; i < index; i++) {
+        if (head->next) {
+            head = head->next;
+        } else {
+            return;
+        }
+    }
+    new_node->next = head->next;
+    head->next = new_node;
+}
 
 // 逆序链表结点
 void reverse_list(stu_t * head)
@@ -199,9 +213,23 @@ void reverse_list(stu_t * head)
     head->next = NULL;
     while (p) {
         stu_t * tmp = p->next;
-        p->next = head->next;
-        head->next = p;
+        insert_node(head, p, 0);
         p = tmp;
     }
     
 }
+
+
+//// 逆序链表结点
+//void reverse_list(stu_t * head)
+//{
+//    stu_t * p = head->next;
+//    head->next = NULL;
+//    while (p) {
+//        stu_t * tmp = p->next;
+//        p->next = head->next;
+//        head->next = p;
+//        p = tmp;
+//    }
+//    
+//}
