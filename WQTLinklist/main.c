@@ -27,7 +27,8 @@ void add_node(stu_t * head, stu_t * new_node);
 void traverse_list(stu_t * head,  void (*func)(stu_t *));
 // 销毁链表
 void clear_list(stu_t *);
-
+// 搜索链表
+void search_list(stu_t *, stu_t *);
 
 // 遍历打印学生
 void print_students(stu_t * head);
@@ -41,7 +42,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4 查找一名学生的信息\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -54,7 +55,16 @@ int main(int argc, const char * argv[]) {
             // 遍历链表, 打印每个结点的信息
             print_students(head);
         } else if (ctr == 3) {
+            // 清空链表, 删除并释放每个结点
             clear_list(head);
+        } else if (ctr == 4) {
+            // 搜索学生的信息
+            // 根据姓名搜索
+            stu_t * p = create_node();
+            scanf("%s", p->name);
+            // 搜索对应结点
+            
+            
         }
     }
     
@@ -118,4 +128,15 @@ void clear_list(stu_t * head)
 void print_students(stu_t * head)
 {
     traverse_list(head, print_node);
+}
+
+// 搜索链表
+void search_list(stu_t * head, stu_t * p)
+{
+    // p是参照结点
+    while ((head = head->next)) {
+        if (strcmp(head->name, p->name)) {
+            print_node(head);
+        }
+    }
 }
