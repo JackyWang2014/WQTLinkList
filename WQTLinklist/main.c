@@ -42,6 +42,9 @@ void search_list(stu_t *, stu_t *, BOOL (*)(stu_t *, stu_t *),void (*func)(stu_t
 void print_students(stu_t * head);
 // 用名字查找学生, 打印学生信息
 void search_students_name(stu_t * head, stu_t * p);
+// 用年龄查找学生, 打印学生信息
+void search_students_age(stu_t * head, stu_t * p);
+
 
 int main(int argc, const char * argv[]) {
   
@@ -52,7 +55,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4 根据名字查找一名学生的信息\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4.根据名字查找一名学生的信息 5.根据年龄查找学生信息\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -74,7 +77,12 @@ int main(int argc, const char * argv[]) {
             scanf("%s", p->name);
             // 搜索对应结点
             search_students_name(head, p);
-            
+            free(p);
+        } else if (ctr == 5) {
+            stu_t * p = create_node();
+            scanf("%d", &p->age);
+            search_students_age(head, p);
+            free(p);
         }
     }
     
@@ -151,6 +159,12 @@ BOOL cmp_node_name(stu_t * p1, stu_t * p2)
     return NO;
 }
 
+// 用年龄比较两个结点
+BOOL cmp_node_age(stu_t * p1, stu_t * p2)
+{
+    return p1->age == p2->age;
+}
+
 // 搜索链表
 void search_list(stu_t * head, stu_t * p, BOOL (*cmp)(stu_t *, stu_t *), void (*func)(stu_t *))
 {
@@ -168,3 +182,9 @@ void search_students_name(stu_t * head, stu_t * p)
     search_list(head, p, cmp_node_name, print_node);
     
 }
+// 用年龄查找学生, 打印学生信息
+void search_students_age(stu_t * head, stu_t * p)
+{
+    search_list(head, p, cmp_node_age, print_node);
+}
+
