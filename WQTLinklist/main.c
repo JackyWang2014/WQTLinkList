@@ -34,9 +34,10 @@ void traverse_list(stu_t * head,  void (*func)(stu_t *));
 void clear_list(stu_t *);
 // 搜索链表
 void search_list(stu_t *, stu_t *, BOOL (*)(stu_t *, stu_t *),void (*func)(stu_t *));
-
+// 逆序链表
 void reverse_list(stu_t * head);
-
+// 冒泡排序 单链表
+void sort_list_bubble(stu_t * head);
 
 
 // 遍历打印学生
@@ -56,7 +57,7 @@ int main(int argc, const char * argv[]) {
     head = create_node();
     
     while (1) {
-        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4.根据名字查找一名学生的信息 5.根据年龄查找学生信息 6.逆序所有学生\n");
+        printf("请选择操作:1.添加学生 2.打印学生列表 3.清空所有学生 4.根据名字查找一名学生的信息 5.根据年龄查找学生信息 6.逆序所有学生 7.冒泡法根据年龄排序\n");
         int ctr;
         scanf("%d",&ctr);
         if (ctr == 1) {
@@ -87,6 +88,8 @@ int main(int argc, const char * argv[]) {
         } else if (ctr == 6) {
             // 逆序链表的每个结点
             reverse_list(head);
+        } else if (ctr == 7) {
+            sort_list_bubble(head);
         }
     }
     
@@ -233,3 +236,41 @@ void reverse_list(stu_t * head)
 //    }
 //    
 //}
+
+
+void sort_list_bubble(stu_t * head)
+{
+    stu_t * temp1, * temp2, *p, *q;
+    
+    for (q = head; q->next != NULL; q = q->next) {
+        for (p = q->next; p->next != NULL; p = p->next) {
+            // 实际是比较的q->next 和 p->next的大小 如果不符合条件就交换q->next 和 p->next
+            
+            if (p->next->age > q->next->age) {
+                //如果q->next == p 的话 交换q->next 和p->next 就是交换p和p->next
+                // 此时 p的位置已经交换 到 原来的 p->next处, 需要交换结束后 让p指向交换钱的位置
+                
+                if (q->next == p) {
+                    temp1 = p->next;
+                    p->next = p->next->next;
+                    temp1->next = q->next;
+                    q->next = temp1;
+                    p = temp1;
+                } else {
+                    // q->next != p->next 的话, 只需要交换q->next结点 和 p->next结点就可以了 p和 q的位置都不会改变
+                    temp1 = p->next;
+                    temp2 = q->next;
+                    p->next = p->next->next;
+                    q->next = q->next->next;
+                    temp1->next = q->next;
+                    q->next = temp1;
+                    temp2->next = p->next;
+                    p->next = temp2;
+                }
+            }
+        }
+    }
+    
+    print_students(head);
+}
+
